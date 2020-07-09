@@ -1,6 +1,6 @@
 <template>
 
-      <v-row dense>
+    <v-row dense>
         <v-col cols="12">
           <v-card>
           <v-img
@@ -8,7 +8,7 @@
           class="white--text align-end"
           gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
           height="200px">
-            <v-card-title class="headline">Quiz Category</v-card-title>
+            <v-card-title class="headline">{{name}}</v-card-title>
         </v-img>
           </v-card>
         </v-col>
@@ -19,8 +19,12 @@
 <script>
   export default {
     data: () => ({
-
-
-    })
+      
+    }),
+    props: ['name'],
+    created() {
+      // Simple GET request using fetch
+      
+    }
   }
 </script>
