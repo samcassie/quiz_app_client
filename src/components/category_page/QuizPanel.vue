@@ -8,7 +8,7 @@
                     gradient="to bottom, rgba(101,131,242), rgba(0,0,0,.5)"
                     height="100px"
                     >
-                        <v-card-title class="headline">Quiz Here</v-card-title>
+                        <v-card-title class="headline">{{ quiz.name }}</v-card-title>
                     </v-img>
                 </v-card>
             </v-col>
@@ -22,6 +22,6 @@ export default {
 
 
     }),
-    props: ['name']
+    props: ['quiz']
 }
 </script>
