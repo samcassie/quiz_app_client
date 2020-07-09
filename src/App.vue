@@ -116,8 +116,13 @@
           ></v-img></v-avatar>
       </v-btn>
     </v-app-bar>
+
+
     <v-main>
-        <quiz-category-grid />
+
+        <!-- <quiz-category-grid /> -->
+        <router-view />
+
     </v-main>
 
   </v-app>
@@ -125,14 +130,10 @@
 </template>
 
 <script>
-    import QuizCategoryGrid from '@/components/QuizCategoryGrid';
 
   export default {
     props: {
       source: String,
-    },
-    components: {
-        'quiz-category-grid': QuizCategoryGrid
     },
     data: () => ({
       dialog: false,

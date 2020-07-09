@@ -2,16 +2,16 @@
 
     <div class="">
     <v-container>
-        <quiz-category-panel />
-        <quiz-category-panel />
-        <quiz-category-panel />
+        <quiz-category-panel name="Sports"/>
+        <quiz-category-panel name="Space"/>
+        <quiz-category-panel name="Geography"/>
     </v-container>
     </div>
 
 </template>
 
 <script>
-import QuizCategoryPanel from '@/components/QuizCategoryPanel';
+import QuizCategoryPanel from '@/components/home_page/QuizCategoryPanel';
 
 export default {
     name: "QuizGrid",
@@ -22,4 +22,5 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
 </style>
