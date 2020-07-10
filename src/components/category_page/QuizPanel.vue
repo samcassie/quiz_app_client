@@ -21,26 +21,45 @@
 
                 <!-- This is the pop up box -->
                 <v-card>
-                    <v-card-title class="headline">{{ quiz.name }} <span v-if="gameActive == true"> - Score: {{score}} </span> </v-card-title>
-                    <v-card-text v-if="gameActive == false">Click Start to begin. Be careful of the timer.</v-card-text>
+                    <v-card-title class="headline justify-space-between">{{ quiz.name }} <span v-if="gameActive == 2"> Q{{index + 1}}/10</span> </v-card-title>
+                    <v-card-text v-if="gameActive == 1">Click Start to begin. Be careful of the timer.</v-card-text>
 
 
-                    <v-card-text v-if="gameActive == true" class="questionText">
+                    <v-card-text v-if="gameActive == 2" class="questionText">
 
                         {{quiz.questions[index].question}}
                         <br>
                         <br>
 
-                        <div v-for="answer in quiz.questions[index].answers">
-                            <input type="radio" name="answer" :value="quiz.questions[index].answers.indexOf(answer)"> <label for="answer" class="answerLabel">{{answer}}</label>
-                        </div>
+                        <v-row no-gutters>
+                          <template v-for="(answer, panelIndex) in quiz.questions[index].answers">
+                            <v-col :key="panelIndex">
+                              <v-card
+                                class="pa-2"
+                                v-bind:class="{ green : (hasAnswered && panelIndex == quiz.questions[index].correctAnswerIndex), red : (hasAnswered && panelIndex == selectedIndex && panelIndex != quiz.questions[index].correctAnswerIndex)}"
+                                outlined
+                                tile @click="checkAnswer(panelIndex)"
+                              >
+                                {{answer}}
+                              </v-card>
+                            </v-col>
+                            <v-responsive
+                              v-if="panelIndex === 1"
+                              :key="`width-${n}`"
+                              width="100%"
+                            ></v-responsive>
+                          </template>
+                        </v-row>
 
                     </v-card-text>
 
+                    <v-card-text v-if="gameActive == 3">Game completed! You scored {{score}}.</v-card-text>
+
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="green darken-1" text @click="nextQuestion" v-if="gameActive == true">Next</v-btn>
-                        <v-btn color="green darken-1" text @click="gameActive = true" v-if="gameActive == false">Start</v-btn>
+                        <v-btn color="green darken-1" text @click="finishQuiz" v-if="finishButton == true">Finish Quiz</v-btn>
+                        <v-btn color="green darken-1" text @click="nextQuestion" v-if="nextButton == true">Next Question</v-btn>
+                        <v-btn color="green darken-1" text @click="gameActive = 2" v-if="gameActive == 1">Start</v-btn>
                         <v-btn color="red darken-1" text @click="quitQuiz">Quit</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -59,42 +78,64 @@ export default {
     data () {
         return {
             dialog: false,
-            gameActive: false,
+            gameActive: 1,
+            nextButton: false,
+            hasAnswered: false,
             index: 0,
-            score: 0
+            score: 0,
+            selectedIndex: null,
+            finishButton: false
         }
     },
     props: ['quiz'],
     methods: {
-        nextQuestion () {
-            if ((document.querySelector('input[name = "answer"]:checked').value) == this.quiz.questions[this.index].correctAnswerIndex){
-                this.score += 1
+        checkAnswer(cardIndex) {
+            if (this.hasAnswered == false) {
+                if ((cardIndex) == this.quiz.questions[this.index].correctAnswerIndex){
+                    this.score += 1;
+                }
+                if ((this.index + 1) < this.quiz.questions.length) {
+                    this.nextButton = true;
+                } else {
+                    this.finishButton = true;
+                }
+                this.hasAnswered = true;
+                this.selectedIndex = cardIndex;
             }
+        },
+
+        nextQuestion () {
             if (this.index <= this.quiz.questions.length) {
                 this.index += 1;
             }
-            document.querySelector('input[name="answer"]:checked').checked = false;
+            this.nextButton = false;
+            this.hasAnswered = false;
+            this.selectedIndex = null;
         },
 
         quitQuiz () {
             this.dialog = false;
-            this.gameActive = false;
+            this.nextButton = false;
+            this.hasAnswered = false;
+            this.gameActive = 1;
             this.index = 0;
-            this.score = 0
+            this.score = 0;
+            this.finishButton = false;
+        },
+
+        finishQuiz () {
+            this.finishButton = false;
+            this.gameActive = 3;
         }
     }
-
 }
+
 </script>
 
 <style media="screen" scoped>
 
-    .answerLabel {
-        margin-left: 10px;
-    }
-
-    .questionText {
-        font-weight: bolder;
+    #scoreCounter {
+        right: 0;
     }
 
 </style>
