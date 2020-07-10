@@ -21,13 +21,25 @@
 
                 <!-- This is the pop up box -->
                 <v-card>
-                    <v-card-title class="headline justify-space-between">{{ quiz.name }} <span v-if="gameActive == 2"> Q{{index + 1}}/10</span> </v-card-title>
+                    <v-card-title class="headline justify-space-between pb-8">{{ quiz.name }}
+                        <span v-if="(gameActive == 2) && ((showTimer == true) && (countdown != 0))" class="red--text">
+                            {{countdown}}
+                        </span>
+
+                        <span v-if="timeUp && showTimer" class="red--text time">TIME UP</span>
+
+                        <span v-if="justInTime" class="green--text time2">JUST IN TIME</span>
+
+
+                        <span v-if="gameActive == 2"> Q{{index + 1}}/10</span>
+                    </v-card-title>
+
                     <v-card-text v-if="gameActive == 1">Click Start to begin. Be careful of the timer.</v-card-text>
 
 
-                    <v-card-text v-if="gameActive == 2" class="questionText">
+                    <v-card-text v-if="gameActive == 2" class="questionText" align="center" justify="center">
 
-                        {{quiz.questions[index].question}}
+                        <span class="font-weight-black question" >{{quiz.questions[index].question}}</span>
                         <br>
                         <br>
 
@@ -35,9 +47,9 @@
                           <template v-for="(answer, panelIndex) in quiz.questions[index].answers">
                             <v-col :key="panelIndex">
                               <v-card
-                                class="pa-2"
-                                v-bind:class="{ green : (hasAnswered && panelIndex == quiz.questions[index].correctAnswerIndex), red : (hasAnswered && panelIndex == selectedIndex && panelIndex != quiz.questions[index].correctAnswerIndex)}"
-                                outlined
+                                shaped
+                                class="pa-2 ma-1 answer-border rounded"
+                                v-bind:class="{ correct : (hasAnswered && panelIndex == quiz.questions[index].correctAnswerIndex), red : (hasAnswered && panelIndex == selectedIndex && panelIndex != quiz.questions[index].correctAnswerIndex)}"
                                 tile @click="checkAnswer(panelIndex)"
                               >
                                 {{answer}}
@@ -45,7 +57,7 @@
                             </v-col>
                             <v-responsive
                               v-if="panelIndex === 1"
-                              :key="`width-${n}`"
+                              :key="`width-${panelIndex}`"
                               width="100%"
                             ></v-responsive>
                           </template>
@@ -53,13 +65,13 @@
 
                     </v-card-text>
 
-                    <v-card-text v-if="gameActive == 3">Game completed! You scored {{score}}.</v-card-text>
+                    <v-card-text v-if="gameActive == 3">Quiz completed! You scored {{score}}.</v-card-text>
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="green darken-1" text @click="finishQuiz" v-if="finishButton == true">Finish Quiz</v-btn>
-                        <v-btn color="green darken-1" text @click="nextQuestion" v-if="nextButton == true">Next Question</v-btn>
-                        <v-btn color="green darken-1" text @click="gameActive = 2" v-if="gameActive == 1">Start</v-btn>
+                        <v-btn color="green darken-1" text @click="finishQuiz()" v-if="finishButton == true">Finish Quiz</v-btn>
+                        <v-btn color="green darken-1" text @click="nextQuestion()" v-if="nextButton == true">Next Question</v-btn>
+                        <v-btn color="green darken-1" text @click="startGame()" v-if="gameActive == 1">Start</v-btn>
                         <v-btn color="red darken-1" text @click="quitQuiz">Quit</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -84,7 +96,11 @@ export default {
             index: 0,
             score: 0,
             selectedIndex: null,
-            finishButton: false
+            finishButton: false,
+            countdown: 10,
+            showTimer: true,
+            justInTime: false,
+            timeUp: false
         }
     },
     props: ['quiz'],
@@ -101,7 +117,20 @@ export default {
                 }
                 this.hasAnswered = true;
                 this.selectedIndex = cardIndex;
+            };
+            if ((this.countdown == 1) && ((cardIndex) == this.quiz.questions[this.index].correctAnswerIndex)) {
+                this.justInTime = true;
+                this.showTimer = false
+            } else if (this.countdown != "0") {
+                this.showTimer = false
             }
+        },
+
+        startGame(){
+            this.gameActive = 2;
+            this.countdown = 10;
+            this.showTimer = true;
+            this.countdownTimer();
         },
 
         nextQuestion () {
@@ -111,6 +140,15 @@ export default {
             this.nextButton = false;
             this.hasAnswered = false;
             this.selectedIndex = null;
+            this.showTimer = true;
+            this.justInTime = false;
+            this.timeUp = false;
+            if (this.countdown == 0){
+                this.countdown = 10;
+                this.countdownTimer()
+            } else {
+                this.countdown = 10;
+            }
         },
 
         quitQuiz () {
@@ -121,12 +159,30 @@ export default {
             this.index = 0;
             this.score = 0;
             this.finishButton = false;
+            this.countdown = null;
+            this.justInTime = false;
         },
 
         finishQuiz () {
             this.finishButton = false;
             this.gameActive = 3;
-        }
+            this.countdown = null;
+            this.justInTime = false;
+            this.timeup = false;
+        },
+
+        countdownTimer() {
+                if(this.countdown > 0) {
+                    setTimeout(() => {
+                        this.countdown -= 1
+                        this.countdownTimer()
+                    }, 1000)
+                } else if ((this.countdown == 0) && (this.gameActive == 2)) {
+                    this.countdown = 0;
+                    this.checkAnswer()
+                    this.timeUp = true;
+                }
+            }
     }
 }
 
@@ -134,8 +190,25 @@ export default {
 
 <style media="screen" scoped>
 
-    #scoreCounter {
-        right: 0;
+    .answer-border {
+        border: 1px solid black;
+    }
+
+    .correct {
+        background-color: green;
+        color: white;
+    }
+
+    .question {
+        font-size: 1.1em;
+    }
+
+    .time {
+        font-size: 0.7em;
+    }
+
+    .time2 {
+        font-size: 0.5em;
     }
 
 </style>
