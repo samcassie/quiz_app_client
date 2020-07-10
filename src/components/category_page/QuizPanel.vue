@@ -32,6 +32,8 @@
 
 
                         <span v-if="gameActive == 2"> Q{{index + 1}}/10</span>
+
+                        <span v-if="gameActive == 3" class="green--text mdi mdi-checkbox-marked-circle-outline"></span>
                     </v-card-title>
 
                     <v-card-text v-if="gameActive == 1">Click Start to begin. Be careful of the timer.</v-card-text>
@@ -65,9 +67,24 @@
 
                     </v-card-text>
 
-                    <v-card-text v-if="gameActive == 3">Quiz completed! You scored {{score}}.</v-card-text>
+                    <v-card-text v-if="gameActive == 3" align="center" justify="center" class="font-weight-black">
+                        Quiz completed! You scored:
+                        <br><br>
+                        <span class="score-reveal">{{score}}</span>
+                        <br>
+                        <br>
+                        <v-card-text v-if="score >= 7" class="font-weight-black">
+                            You earned 10 quiz points!
+                        </v-card-text>
+                        <v-card-text v-if="score < 7" class="font-weight-black quiz-points-box">
+                            You didnt earn any quiz points!
+                            <br>
+                            Achieve 7 or higher to recieve quiz points for each quiz.
+                        </v-card-text>
+                    </v-card-text>
 
                     <v-card-actions>
+                        <span v-if="gameActive == 3" class="ml-3 "> Your QP: 0 </span>
                         <v-spacer></v-spacer>
                         <v-btn color="green darken-1" text @click="finishQuiz()" v-if="finishButton == true">Finish Quiz</v-btn>
                         <v-btn color="green darken-1" text @click="nextQuestion()" v-if="nextButton == true">Next Question</v-btn>
@@ -161,6 +178,7 @@ export default {
             this.finishButton = false;
             this.countdown = null;
             this.justInTime = false;
+            this.selectedIndex = null;
         },
 
         finishQuiz () {
@@ -168,7 +186,8 @@ export default {
             this.gameActive = 3;
             this.countdown = null;
             this.justInTime = false;
-            this.timeup = false;
+            this.timeUp = false;
+            this.selectedIndex = null;
         },
 
         countdownTimer() {
@@ -211,4 +230,14 @@ export default {
         font-size: 0.5em;
     }
 
+    .score-reveal {
+        color: black;
+        font-size: 9em;
+        line-height: 1.1em;
+    }
+
+    .quiz-points-box {
+        border: 1px solid darkgrey;
+        border-radius: 2em;
+    }
 </style>
