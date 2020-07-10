@@ -85,7 +85,7 @@
         style="width: 300px"
         class="ml-0 pl-4"
       >
-        <span class="hidden-sm-and-down">Quiz</span>
+        <router-link :to="{path: '/'}"><span class="white--text">Quiz</span></router-link>
       </v-toolbar-title>
       <v-text-field
         flat
