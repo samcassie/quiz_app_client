@@ -1,7 +1,17 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 
-Vue.use(Vuetify);
+Vue.use(Vuetify)
 
 export default new Vuetify({
+    theme: {
+        themes: {
+            light: {
+                primary: '#0C4A60',
+                secondary: '#fcfcfc',
+                accent: '#ABDFF1',
+                warning: '#EF6C33'
+            }
+        }
+    }
 });

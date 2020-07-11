@@ -9,11 +9,10 @@
 
                     <v-card v-on="on" v-bind="attrs">
                         <v-img
-                        class="white--text align-end"
-                        gradient="to bottom, rgba(101,131,242), rgba(0,0,0,.5)"
+                        class="primary white--text align-end"
                         height="100px"
                         >
-                        <v-card-title class="headline">{{ quiz.name }}</v-card-title>
+                        <v-card-title class="">{{ quiz.name }}</v-card-title>
                         </v-img>
                     </v-card>
                 </template>
@@ -21,7 +20,7 @@
 
                 <!-- This is the pop up box -->
                 <v-card>
-                    <v-card-title class="headline justify-space-between pb-8">{{ quiz.name }}
+                    <v-card-title class="justify-space-between pb-8">{{ quiz.name }}
                         <span v-if="(gameActive == 2) && ((showTimer == true) && (countdown != 0))" class="red--text">
                             {{countdown}}
                         </span>
