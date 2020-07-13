@@ -1,7 +1,7 @@
 <template lang="html">
 
     <div class="">
-    <v-container v-for="(quiz, index) in quizzes" v-if="quiz.categories == $route.params.name">
+    <v-container v-for="(quiz, index) in quizzes">
         <quiz-panel :quiz="quiz"/>
     </v-container>
     </div>
@@ -26,7 +26,8 @@ export default {
     },
     methods: {
         fetchData () {
-            fetch("https://quiz-app-server2.herokuapp.com/category/football?fbclid=IwAR0iSsczKju5S7hXEPEYla3Iue3IyvHE0JhghyZ09UnXLQgj9CLwhcblG8Q")
+            var category = this.$route.params.name;
+            fetch(`https://quiz-app-server2.herokuapp.com/category/${category}`)
             .then(response => response.json())
             .then(data => this.quizzes = data);
         }
