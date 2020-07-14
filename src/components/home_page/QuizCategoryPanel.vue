@@ -2,7 +2,7 @@
 
     <router-link :to="{path: '/category/' + category.slug}">
         <v-row dense>
-            <v-col cols="9">
+            <v-col cols="12">
                 <v-card class="border-card">
                     <v-img
                     :src_x="category.imageUrl"

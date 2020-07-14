@@ -15,10 +15,10 @@
       </v-btn>
 
       <v-toolbar-title
-        style="width: 300px"
+        style="width: 400px"
         class="ml-0 pl-4"
       >
-            <span class="white--text ml-3">Quiz</span>
+            <span class="white--text ml-3">Quiz Clock - Fun, timed quizzing</span>
 
       </v-toolbar-title>
       <!-- Search bar wouldnt scale properly so commented out for now -->
@@ -100,6 +100,8 @@
 </script>
 
 <style lang="css" scoped>
+
+    @import url('https://fonts.googleapis.com/css2?family=Modak&display=swap');
 
     .router-view {
         padding-top: 1.5em;

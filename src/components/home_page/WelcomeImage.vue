@@ -6,12 +6,12 @@
                 <v-card class="border-card">
                     <v-img
 
-                    src="https://www.bls.gov/spotlight/2017/sports-and-exercise/images/cover_image.jpg"
-                    class="white--text align-end"
+                    src="https://tedideas.files.wordpress.com/2018/08/featured_art_iowa_big.jpg"
+                    class="white--text align-center"
                     gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                     height="300px"
                     >
-                        <v-card-title class="category-name">Welcome</v-card-title>
+                        <v-card-title class="category-name">QUIZ CLOCK</v-card-title>
                     </v-img>
                 </v-card>
             </v-col>
@@ -33,13 +33,16 @@ export default {
 <style lang="css" scoped>
 
     .border-card {
-        border: 2px solid #0C4A60 !important;
+        border: 5px solid #0C4A60 !important;
     }
 
     .category-name {
-        font-size: 1.9em !important;
+        font-size: 7em !important;
+        font-size: 10vh !important;
+        font-family: 'Modak', cursive;
         text-decoration: none !important;
         font-style: normal;
+        justify-content: center;
 
     }
 </style>
