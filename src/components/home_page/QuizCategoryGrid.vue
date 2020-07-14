@@ -4,13 +4,13 @@
         <v-container class="categoryContainer">
             <v-row>
             <v-col cols="8">
-                <h1 class="topCategories pb-4 white--text" >Our top categories:</h1>
+                <h1 class="topLists topCategory pb-3 white--text" >Our top categories:</h1>
                 <div v-for="category in categories">
                     <quiz-category-panel :category="category"/>
                 </div>
             </v-col>
             <v-col cols="4">
-                <h1 class="topCategories pb-4 white--text" >Top 10 quizzes:</h1>
+                <h1 class="topLists pb-3 white--text" >Top 10 quizzes:</h1>
                 <top-quizzes :topQuizzes="topQuizzes"/>
             </v-col>
         </v-row>
@@ -59,7 +59,7 @@ export default {
 
 <style lang="css" scoped>
 
-    .topCategories{
+    .topLists{
         font-size: 1.5em !important;
     }
 

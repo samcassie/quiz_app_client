@@ -6,10 +6,9 @@
             <v-card class="border-card">
                 <div v-for="(quiz, index) in topQuizzes">
                     <h3 class="topQuizList black--text">
-                    <span class="quizTitle">{{index + 1}} : {{quiz.name}}</span>
-                    <br>
-                    Total hits: {{quiz.hitCount}}</h3>
-                    <br>
+                    <span class="pr-1">{{index + 1}}</span>
+                        <span class="red--text mdi mdi-fire pr-1"></span>
+                        <span class="quizTitle"> {{quiz.name}}</span></h3>
                 </div>
             </v-card>
         </v-col>
@@ -30,7 +29,7 @@ export default {
 <style lang="css" scoped>
 
     .topQuizList{
-        font-size: 0.9em;
+        font-size: 0.8em;
     }
 
     .quizTitle{
